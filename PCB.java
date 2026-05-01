@@ -102,6 +102,10 @@ private int remainingBurst;
 	        this.remainingBurst = remainingBurst;
 	    }
 
+	    public void setPriority(int priority) {
+	        this.priority = priority;
+	    }
+	    
 	    @Override
 	    public String toString() {
 	        return "Process" + processID +
