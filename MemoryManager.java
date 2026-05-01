@@ -1,4 +1,3 @@
-
 public class MemoryManager {
 
     private static final int TOTAL_MEMORY = 2048;
