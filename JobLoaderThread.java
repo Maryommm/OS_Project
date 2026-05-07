@@ -1,3 +1,5 @@
+package OS_Project;
+
 public class JobLoaderThread extends Thread {
 
     private JobQueue jobQueue;
@@ -17,7 +19,7 @@ public class JobLoaderThread extends Thread {
 
     @Override
     public void run() {
-        System.out.println("[Thread 2] JobLoaderThread started.");
+        System.out.println("JobLoaderThread started.");
 
         //  Running until processes finish
         while (completedProcesses < totalProcesses) {

@@ -1,23 +1,25 @@
 package OS_Project;
 
-import java.util.LinkedList;
-import java.util.Queue;
-
 public class RoundRobin extends Scheduler {
 
     private static final int QUANTUM = 5;
 
-    public RoundRobin(ReadyQueue readyQueue) {
-        super(readyQueue);
+    public RoundRobin(ReadyQueue readyQueue, JobLoaderThread jobLoader, int totalProcesses) {
+        super(readyQueue, jobLoader, totalProcesses);
     }
 
     @Override
     public void schedule() {
-        Queue<PCB> queue = new LinkedList<>(readyQueue.getQueueSnapshot());
         int currentTime = 0;
 
-        while (!queue.isEmpty()) {
-            PCB process = queue.poll();
+        while (finishedProcesses.size() < totalProcesses) {
+            PCB process = readyQueue.removeProcess(); // يسحب أول عملية
+
+            if (process == null) {
+                currentTime++;
+                try { Thread.sleep(5); } catch (Exception e) {}
+                continue;
+            }
 
             if (process.getStartTime() == -1) {
                 process.setStartTime(currentTime);
@@ -36,12 +38,9 @@ public class RoundRobin extends Scheduler {
             currentTime = endTime;
 
             if (process.getRemainingBurst() > 0) {
-                process.setState("READY");
-                queue.add(process);
+                readyQueue.addProcess(process); 
             } else {
-                process.setTerminationTime(currentTime);
-                process.setState("TERMINATED");
-                finishedProcesses.add(process);
+                finalizeProcess(process, currentTime); 
             }
         }
     }

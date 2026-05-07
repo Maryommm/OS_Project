@@ -1,15 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-package os;
-
-/**
- *
- * @author janaa
- */
+package OS_Project;
 import java.util.ArrayList;
-
+import java.util.Locale;
 public class OutputManager {
 
     public static class GanttEntry {
@@ -49,10 +40,10 @@ public class OutputManager {
     }
 
     public void printGanttChart(ArrayList<GanttEntry> ganttChart) {
-        System.out.println("\n========== GANTT CHART ==========");
+        System.out.println("\n------ GANTT CHART ------");
 
         if (ganttChart == null || ganttChart.isEmpty()) {
-            System.out.println("No Gantt chart data available.");
+            System.out.println("No Gantt chart data available!");
             return;
         }
 
@@ -84,7 +75,7 @@ public class OutputManager {
     }
 
     public void printProcessTable(ArrayList<PCB> processes) {
-        System.out.println("\n========== RESULT TABLE ==========");
+        System.out.println("\n------ RESULT TABLE ------");
         System.out.println("PID\tBurst\tStart\tTermination\tWaiting\tTurnaround");
 
         for (PCB process : processes) {
@@ -100,16 +91,16 @@ public class OutputManager {
     }
 
     public void printPerformanceMetrics(double avgWaiting, double avgTurnaround) {
-        System.out.println("\n========== PERFORMANCE METRICS ==========");
-        System.out.printf("Average Waiting Time: %.2f ms%n", avgWaiting);
-        System.out.printf("Average Turnaround Time: %.2f ms%n", avgTurnaround);
+        System.out.println("\n------ PERFORMANCE METRICS ------");
+        System.out.printf(Locale.US, "Average Waiting Time: %.2f ms%n", avgWaiting);
+        System.out.printf(Locale.US, "Average Turnaround Time: %.2f ms%n", avgTurnaround);
     }
 
     public void printStarvedProcesses(ArrayList<PCB> starvedProcesses) {
-        System.out.println("\n========== STARVED PROCESSES ==========");
+        System.out.println("\n------ STARVED PROCESSES ------");
 
         if (starvedProcesses == null || starvedProcesses.isEmpty()) {
-            System.out.println("No process suffered from starvation.");
+            System.out.println("No process suffered from starvation");
             return;
         }
 

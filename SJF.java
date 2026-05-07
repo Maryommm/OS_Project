@@ -5,33 +5,41 @@ import java.util.Comparator;
 
 public class SJF extends Scheduler {
 
-    public SJF(ReadyQueue readyQueue) {
-        super(readyQueue);
+    public SJF(ReadyQueue readyQueue, JobLoaderThread jobLoader, int totalProcesses) {
+        super(readyQueue, jobLoader, totalProcesses);
     }
 
     @Override
     public void schedule() {
-        ArrayList<PCB> processes = new ArrayList<>(readyQueue.getQueueSnapshot());
-
-        processes.sort(Comparator
-                .comparingInt(PCB::getBurstTime)
-                .thenComparingInt(PCB::getProcessID));
-
         int currentTime = 0;
 
-        for (PCB process : processes) {
-            process.setState("RUNNING");
-            process.setStartTime(currentTime);
+        while (finishedProcesses.size() < totalProcesses) {
+            ArrayList<PCB> availableProcesses = new ArrayList<>(readyQueue.getQueueSnapshot());
 
-            int startBurst = process.getBurstTime();
-            int endTime = currentTime + process.getBurstTime();
+            if (availableProcesses.isEmpty()) {
+                currentTime++;
+                try { Thread.sleep(5); } catch (Exception e) {} 
+                continue;
+            }
 
-            addGanttEntry(process, currentTime, endTime, startBurst, 0);
+            availableProcesses.sort(Comparator
+                    .comparingInt(PCB::getBurstTime)
+                    .thenComparingInt(PCB::getProcessID));
 
-            process.setTerminationTime(endTime);
-            finalizeProcess(process, endTime);
+            PCB selectedProcess = availableProcesses.get(0);
+            readyQueue.removeProcess(selectedProcess); 
+            if (selectedProcess.getStartTime() == -1) {
+                selectedProcess.setStartTime(currentTime);
+            }
+            selectedProcess.setState("RUNNING");
+
+            int startBurst = selectedProcess.getBurstTime();
+            int endTime = currentTime + selectedProcess.getBurstTime();
+
+            addGanttEntry(selectedProcess, currentTime, endTime, startBurst, 0);
 
             currentTime = endTime;
+            finalizeProcess(selectedProcess, currentTime);
         }
     }
 }
