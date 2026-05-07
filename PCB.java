@@ -2,116 +2,113 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class PCB {
 
-private int processID;
-private int burstTime;
-private int priority;
-private int memoryRequired;
+    // process information
+    private int processID;
+    private int burstTime;
+    private int priority;
+    private int memoryRequired;
+    private int waitingTime;
+    private int turnaroundTime;
+    private int startTime;
+    private int terminationTime;
+    private String state;
 
-private int waitingTime;
-private int turnaroundTime;
+    // Time left to finish (for Round Robin)
+    private int remainingBurst;
 
-private int startTime;
-private int terminationTime;
+    // Constructor
+    public PCB(int processID, int burstTime, int priority, int memoryRequired) {
 
-private String state;
+        this.processID = processID;
+        this.burstTime = burstTime;
+        this.priority = priority;
+        this.memoryRequired = memoryRequired;
 
-// Remaining burst for RR
-private int remainingBurst;
+        // B.C at start remaining time is the full burst
+        this.remainingBurst = burstTime;
+        this.waitingTime = 0;
+        this.turnaroundTime = 0;
+        // not started yet -1
+        this.startTime = -1;
+        this.terminationTime = -1;
+        this.state = "NEW";
+    }
 
-       public PCB(int processID, int burstTime, int priority, int memoryRequired) {
+    // Getters and Setters
+    public int getProcessID() {
+        return processID;
+    }
 
-	        this.processID = processID;
-	        this.burstTime = burstTime;
-	        this.priority = priority;
-	        this.memoryRequired = memoryRequired;
+    public int getBurstTime() {
+        return burstTime;
+    }
 
-	        this.remainingBurst = burstTime;
+    public int getPriority() {
+        return priority;
+    }
 
-	        this.waitingTime = 0;
-	        this.turnaroundTime = 0;
+    public int getMemoryRequired() {
+        return memoryRequired;
+    }
 
-	        this.startTime = -1;
-	        this.terminationTime = -1;
+    public int getWaitingTime() {
+        return waitingTime;
+    }
 
-	        this.state = "NEW";
-	    }
+    public void setWaitingTime(int waitingTime) {
+        this.waitingTime = waitingTime;
+    }
 
-	    // Getters and Setters
+    public int getTurnaroundTime() {
+        return turnaroundTime;
+    }
 
-	    public int getProcessID() {
-	        return processID;
-	    }
+    public void setTurnaroundTime(int turnaroundTime) {
+        this.turnaroundTime = turnaroundTime;
+    }
 
-	    public int getBurstTime() {
-	        return burstTime;
-	    }
+    public int getStartTime() {
+        return startTime;
+    }
 
-	    public int getPriority() {
-	        return priority;
-	    }
+    public void setStartTime(int startTime) {
+        this.startTime = startTime;
+    }
 
-	    public int getMemoryRequired() {
-	        return memoryRequired;
-	    }
+    public int getTerminationTime() {
+        return terminationTime;
+    }
 
-	    public int getWaitingTime() {
-	        return waitingTime;
-	    }
+    public void setTerminationTime(int terminationTime) {
+        this.terminationTime = terminationTime;
+    }
 
-	    public void setWaitingTime(int waitingTime) {
-	        this.waitingTime = waitingTime;
-	    }
+    public String getState() {
+        return state;
+    }
 
-	    public int getTurnaroundTime() {
-	        return turnaroundTime;
-	    }
+    public void setState(String state) {
+        this.state = state;
+    }
 
-	    public void setTurnaroundTime(int turnaroundTime) {
-	        this.turnaroundTime = turnaroundTime;
-	    }
+    public int getRemainingBurst() {
+        return remainingBurst;
+    }
 
-	    public int getStartTime() {
-	        return startTime;
-	    }
+    public void setRemainingBurst(int remainingBurst) {
+        this.remainingBurst = remainingBurst;
+    }
 
-	    public void setStartTime(int startTime) {
-	        this.startTime = startTime;
-	    }
-
-	    public int getTerminationTime() {
-	        return terminationTime;
-	    }
-
-	    public void setTerminationTime(int terminationTime) {
-	        this.terminationTime = terminationTime;
-	    }
-
-	    public String getState() {
-	        return state;
-	    }
-
-	    public void setState(String state) {
-	        this.state = state;
-	    }
-
-	    public int getRemainingBurst() {
-	        return remainingBurst;
-	    }
-
-	    public void setRemainingBurst(int remainingBurst) {
-	        this.remainingBurst = remainingBurst;
-	    }
-
-	    public void setPriority(int priority) {
-	        this.priority = priority;
-	    }
-	    
-	    @Override
-	    public String toString() {
-	        return "Process" + processID +
-	                " (Burst=" + burstTime +
-	                ", Priority=" + priority +
-	                ", Memory=" + memoryRequired +
-	                "MB)";
-	    }
-	}
+    public void setPriority(int priority) {
+        this.priority = priority;
+    }
+    
+    @Override
+    public String toString() {
+        return "Process" + processID +
+                " (Burst=" + burstTime +
+                ", Priority=" + priority +
+                ", Memory=" + memoryRequired +
+                "MB)";
+    }
+}
